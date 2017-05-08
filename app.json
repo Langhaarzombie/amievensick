@@ -1,0 +1,10 @@
+{
+	"name": "My little test with Heroku",
+	"description": "This' application only purpose is to see if I can heroku",
+	"buildpacks": [
+		{"url": "https://github.com/heroku/heroku-buildpack-python.git"}
+	],
+	"addons": [
+		"papertrail"
+	]
+}

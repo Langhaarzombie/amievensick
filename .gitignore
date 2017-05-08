@@ -1,4 +1,8 @@
 ### mac ###
 .DS_Store
 
+### python ###
+*.pyc
+
 ### else ###
+.env
