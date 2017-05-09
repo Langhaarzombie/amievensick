@@ -3,6 +3,7 @@
 
 ### python ###
 *.pyc
+test.py
 
 ### else ###
 .env
