@@ -52,7 +52,7 @@ class FilterID:
 	 	self.context_name = context_name
 	 	self.eyed = eyed
 
-class WhereID:
+class WhereID: # When searching for an ID the context name passed in findNode(...) mus be the same as in WhereId(...)
 
 	def printFilter(self):
 		print(self.build())
