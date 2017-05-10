@@ -24,9 +24,16 @@ class Filter:
 class Where:
 
 	def printFilter(self):
-		print(self.filter)
-		for f in self.filter:
-			print(f.build())
+		print(self.build())
+
+	def build(self):
+		out = "{"
+		temp = ""
+		for x in xrange(0,len(self.filter)):
+			out = out + temp + self.filter[x].build()
+			temp = ", "
+		out = out + "}"
+		return out
 
 	def addFilter(self, name, value):
 		self.filter.append(Filter(name, value))
@@ -35,6 +42,26 @@ class Where:
 
 	def __init__(self, init_filter = []):
 		self.filter = init_filter
+
+class FilterID:
+
+	 def build(self):
+	 	return "ID("+self.context_name+") = "+str(self.eyed)
+
+	 def __init__(self, context_name, eyed):
+	 	self.context_name = context_name
+	 	self.eyed = eyed
+
+class WhereID:
+
+	def printFilter(self):
+		print(self.build())
+
+	def build(self):
+		return "WHERE "+self.filter.build()
+
+	def __init__(self, context_name, id = 0):
+		self.filter = FilterID(context_name, id)
 
 class Command:
 
@@ -50,17 +77,20 @@ class Command:
 		out = Command(self.command + "\n" + "SET "+node+"."+name+" = "+properDataFormat(value))
 		return out
 
-	def findNode(self, label, where = None, context_name = "result_find_node_default_context_name"):
+	def findNode(self, label, where = None, whereID = None , context_name = "result_find_node_default_context_name"):
 		
 		out = Command(self.command + "\n" + "MATCH ("+context_name+":"+label)
 
 		if(where is not None and len(where.filter) > 0):
-			out = Command(out.command + " {")
-			for f in where.filter:
-				out = Command(out.command + f.build()) #TODO multiple filter with ","
-			out = Command(out.command + "}")
+			out = Command(out.command + where.build())
 
-		out = Command(out.command + ") return "+context_name)
+		out = Command(out.command + ") ")
+
+		if(whereID is not None and whereID.filter is not None):
+			out = Command(out.command + whereID.build())
+
+		out = Command(out.command + " return "+context_name)
+
 		return out
 
 	def printCommand(self):
@@ -73,12 +103,4 @@ class Command:
 
 	def __init__(self, init_command = ""):
 		self.command = init_command
-
-#CREATE (Keanu:Person {name:'Keanu Reeves', born:1964})
-
-#CREATE (Keanu)-[:ACTED_IN {roles:['Neo']}]->(TheMatrix)
-
-#MATCH (tom {name: "Tom Hanks"}) RETURN tom
-
-#MATCH (cloudAtlas {title: "Cloud Atlas"})<-[:DIRECTED]-(directors) RETURN directors.name
 
