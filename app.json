@@ -5,6 +5,8 @@
 		{"url": "https://github.com/heroku/heroku-buildpack-python.git"}
 	],
 	"addons": [
-		"papertrail"
+		"papertrail",
+		"graphenedeb",
+		"postgresql"
 	]
 }

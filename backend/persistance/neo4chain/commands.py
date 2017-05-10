@@ -27,7 +27,7 @@ class Where:
 		print(self.build())
 
 	def build(self):
-		out = " {"
+		out = "{"
 		temp = ""
 		for x in xrange(0,len(self.filter)):
 			out = out + temp + self.filter[x].build()
@@ -73,12 +73,52 @@ class Command:
 		out = Command(self.command + "\n" + "CREATE ("+node_from+")-["+context_name+":"+label+"]->("+node_to+")")
 		return out
 
-	def addProperty(self, name, value, node):
-		out = Command(self.command + "\n" + "SET "+node+"."+name+" = "+properDataFormat(value))
+	def setProperty(self, name, value, context_name):
+		out = Command(self.command + "\n" + "SET "+context_name+"."+name+" = "+properDataFormat(value))
 		return out
 
-	def findNode(self, label, where = None, context_name = "result_find_node_default_context_name"): # the default context name should only be used when searching for exactly one node
-		
+	#find a node and immediately return it (! onyl at the end of a statement)
+	def findNode(self, label, context_name = "result_find_node_default_context_name", where = None): # the default context name should only be used when searching for exactly one node
+		# Build match clause
+		out = Command(self.command + "\n" + "MATCH ("+context_name+":"+label)
+
+		# Build where clause
+		if(where is not None):
+			if(where.__class__.__name__ == "Where"):
+				if(len(where.filter) > 0):
+					out = Command(out.command + " " + where.build() + ")")
+			elif(where.__class__.__name__ == "WhereID"):
+				out = Command(out.command + ") " + where.build())
+		else:
+			out = Command(out.command + ") ")
+
+		# Build return clause 
+		out = Command(out.command + " return "+context_name)
+
+		return out
+
+	#find a relation and immediately return it (! onyl at the end of a statement)
+	def findRelation(self, rel_label, node_label, context_name = "result_find_relation_default_context_name", node_from = "", node_to = "", where = None):
+		# Build match clause
+		out = Command(self.command + "\n" + "MATCH (" + node_from + ":" + node_label + ")-[" + context_name + ":" + rel_label)
+
+		# Build where clause
+		if(where is not None):
+			if(where.__class__.__name__ == "Where"):
+				if(len(where.filter) > 0):
+					out = Command(out.command + " " + where.build() + "]-(" + node_to + ":" + node_label + ")")
+			elif(where.__class__.__name__ == "WhereID"):
+				out = Command(out.command + "]-(" + node_to + ":" + node_label + ") " + where.build())
+		else:
+			out = Command(out.command + "]-(" + node_to + ":" + node_label + ")")
+
+		# Build return clause 
+		out = Command(out.command + " return "+context_name)
+
+		return out
+
+	#match a node and use it in later code
+	def matchNode(self, label, context_name, where = None):
 		# Build match clause
 		out = Command(self.command + "\n" + "MATCH ("+context_name+":"+label)
 
@@ -92,8 +132,22 @@ class Command:
 		else:
 			out = Command(out.command + ") ")
 
-		# Build return clause
-		out = Command(out.command + " return "+context_name)
+		return out
+
+	#match a relation and use it in later code
+	def matchRelation(self, rel_label, node_label, context_name, node_from = "", node_to = "", where = None):
+		# Build match clause
+		out = Command(self.command + "\n" + "MATCH (" + node_from + ":" + node_label + ")-[" + context_name + ":" + rel_label)
+
+		# Build where clause
+		if(where is not None):
+			if(where.__class__.__name__ == "Where"):
+				if(len(where.filter) > 0):
+					out = Command(out.command + " " + where.build() + "]-(" + node_to + ":" + node_label + ")")
+			elif(where.__class__.__name__ == "WhereID"):
+				out = Command(out.command + "]-(" + node_to + ":" + node_label + ") " + where.build())
+		else:
+			out = Command(out.command + "]-(" + node_to + ":" + node_label + ")")
 
 		return out
 
