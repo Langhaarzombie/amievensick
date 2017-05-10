@@ -27,7 +27,7 @@ class Where:
 		print(self.build())
 
 	def build(self):
-		out = "{"
+		out = " {"
 		temp = ""
 		for x in xrange(0,len(self.filter)):
 			out = out + temp + self.filter[x].build()
@@ -52,7 +52,7 @@ class FilterID:
 	 	self.context_name = context_name
 	 	self.eyed = eyed
 
-class WhereID: # When searching for an ID the context name passed in findNode(...) mus be the same as in WhereId(...)
+class WhereID: # When searching for an ID the context name passed in findNode(...) must be the same as in WhereId(...)
 
 	def printFilter(self):
 		print(self.build())
@@ -60,7 +60,7 @@ class WhereID: # When searching for an ID the context name passed in findNode(..
 	def build(self):
 		return "WHERE "+self.filter.build()
 
-	def __init__(self, context_name, id = 0):
+	def __init__(self, id = 0, context_name = "result_find_node_default_context_name"):
 		self.filter = FilterID(context_name, id)
 
 class Command:
@@ -77,18 +77,22 @@ class Command:
 		out = Command(self.command + "\n" + "SET "+node+"."+name+" = "+properDataFormat(value))
 		return out
 
-	def findNode(self, label, where = None, whereID = None , context_name = "result_find_node_default_context_name"):
+	def findNode(self, label, where = None, context_name = "result_find_node_default_context_name"): # the default context name should only be used when searching for exactly one node
 		
+		# Build match clause
 		out = Command(self.command + "\n" + "MATCH ("+context_name+":"+label)
 
-		if(where is not None and len(where.filter) > 0):
-			out = Command(out.command + where.build())
+		# Build where clause
+		if(where is not None):
+			if(where.__class__.__name__ == "Where"):
+				if(len(where.filter) > 0):
+					out = Command(out.command + where.build() + ") ")
+			elif(where.__class__.__name__ == "WhereID"):
+				out = Command(out.command + ") " + where.build())
+		else:
+			out = Command(out.command + ") ")
 
-		out = Command(out.command + ") ")
-
-		if(whereID is not None and whereID.filter is not None):
-			out = Command(out.command + whereID.build())
-
+		# Build return clause
 		out = Command(out.command + " return "+context_name)
 
 		return out
@@ -104,3 +108,4 @@ class Command:
 	def __init__(self, init_command = ""):
 		self.command = init_command
 
+# TODO search relations
