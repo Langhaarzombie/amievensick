@@ -161,5 +161,3 @@ class Command:
 
 	def __init__(self, init_command = ""):
 		self.command = init_command
-
-# TODO search relations

@@ -39,18 +39,3 @@ class GarbageCollector: # responsible for deleting relations and nodes that were
 		self.deleteRelations("relates") # TODO adjust relation
 		self.deleteNodes("File")
 
-
-### old ###
-
-# Matching
-
-def findAllNodes(label):
-	result = session.run("MATCH (n:"+label+") RETURN n.name AS name, n.path AS path")
-	return result
-
-# Printing
-
-def printResult(result):
-	for record in result:
-		print("%s" % (record["name"]))
-
