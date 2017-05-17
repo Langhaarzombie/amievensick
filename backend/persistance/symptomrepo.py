@@ -14,3 +14,12 @@ def createSymptom(symptom):
 
 def saveSymptom(symptom):
 	pass
+
+def deleteSymptom(symptom):
+	pass
+
+def getSymptom(id):
+	pass
+
+def getSymptomsForSickness(sickness):
+	pass
