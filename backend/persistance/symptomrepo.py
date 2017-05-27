@@ -81,3 +81,8 @@ def getAllSymptoms():
 	cmd.printCommand()
 
 	result = cmd.execute(dbmanager.conn.connection.getSession())
+
+	# Debug
+	print(result)
+
+	return result

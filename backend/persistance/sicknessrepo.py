@@ -58,3 +58,17 @@ def getSicknessBySymptoms(symptoms = []): # leave out paramter to get all sickne
 	print(result)
 
 	return result
+
+def getAllSicknesses():
+	cmd = commands.Command().findNode("sickness")
+
+	# Debug
+	print("Executing: ")
+	cmd.printCommand()
+
+	result = cmd.execute(dbmanager.conn.connection.getSession())
+
+	# Debug
+	print(result)
+
+	return result
