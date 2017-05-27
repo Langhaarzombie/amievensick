@@ -35,7 +35,7 @@ class SicknessList(Resource):
 		resp = Response(out, status=200, mimetype='application/json')
 		return resp
 
-@app.route('/sbs', methods=['GET'])
+@app.route('/sbs', methods=['POST'])
 def getSicknessBySymptom():
 	income = request.get_json()
 	out = service.getSicknessBySymptoms(income)
