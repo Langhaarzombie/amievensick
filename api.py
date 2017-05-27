@@ -24,7 +24,7 @@ class Sickness(Resource):
 
 class SicknessList(Resource):
 	def get(self):
-		return service.getAllSicknesses()
+		return service.getAllSicknesses().json()
 
 api.add_resource(HelloWorld, '/')
 
