@@ -35,7 +35,6 @@ class Where:
 
 	def addFilter(self, name, value):
 		self.filter.append(Filter(name, value))
-		#out = Where(self.filter)
 		return self
 
 	def __init__(self, init_filter = []):
