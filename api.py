@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Resource, Api
+from flask import Response
 
 from backend import service
 
@@ -12,19 +13,27 @@ class HelloWorld(Resource):
 
 class Symptom(Resource):
 	def get(self, sym):
-		return service.getSymptomByName(sym)
+		out = service.getSymptomByName(sym)
+		resp = Response(out, status=200, mimetype='application/json')
+		return resp
 
 class SymptomList(Resource):
 	def get(self):
-		return service.getAllSymptoms()
+		out = service.getAllSymptoms()
+		resp = Response(out, status=200, mimetype='application/json')
+		return resp
 
 class Sickness(Resource):
 	def get(self, sick):
-		return service.getSicknessByName(sick)
+		out = service.getSicknessByName(sick)
+		resp = Response(out, status=200, mimetype='application/json')
+		return resp
 
 class SicknessList(Resource):
 	def get(self):
-		return service.getAllSicknesses()
+		out = service.getAllSicknesses()
+		resp = Response(out, status=200, mimetype='application/json')
+		return resp
 
 api.add_resource(HelloWorld, '/')
 
