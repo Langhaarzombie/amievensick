@@ -23,23 +23,17 @@ def sicknessBoltToDomain(bolt):
 def symptomBoltToJSON(bolt):
 	result = symptomBoltToDomain(bolt)
 
-	string = "{["
-	tmp = ""
+	data = []
 	for x in result:
-		string = string + tmp + x.toJSON()
-		tmp = ","
-	string = string + "]}"
+		data.append(x.__dict__)
 
-	return json.dumps(string)
+	return json.dumps(data)
 
 def sicknessBoltToJSON(bolt):
 	result = sicknessBoltToDomain(bolt)
 
-	string = "{["
-	tmp = ""
+	data = []
 	for x in result:
-		string = string + tmp + x.toJSON()
-		tmp = ","
-	string = string + "]}"
+		data.append(x.__dict__)
 
-	return json.dumps(string)
+	return json.dumps(data)

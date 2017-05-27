@@ -5,5 +5,5 @@ class Symptom:
 		self.id = sym_id
 		self.name = name
 
-	def toJSON(self):
-		return json.dumps({"symptom": {"id": self.id, "name": self.name}})
+	def jdefault(self):
+		return self.__dict__

@@ -8,5 +8,7 @@ class Sickness:
 		self.prevalence = prevalence
 		self.location = location
 
-	def toJSON(self):
-		return json.dumps({"sickness": {"id": self.id, "name": self.name, "requires_medication": self.requires_medication, "prevalence": self.prevalence, "location": self.location}})
+	def jdefault(self):
+		return self.__dict__
+
+	# TODO delete JSON form domain tests
