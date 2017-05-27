@@ -23,7 +23,7 @@ def getSymptomByName(name):
 	return string
 
 def getSicknessByName(name):
-	result = symptomrepo.getSicknessByName(str(name))
+	result = sicknessrepo.getSicknessByName(str(name))
 	string = ""
 	for x in result:
 		string = str(x)
