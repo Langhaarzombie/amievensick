@@ -31,6 +31,7 @@ class Where:
 			out = out + temp + self.filter[x].build()
 			temp = ", "
 		out = out + "}"
+		self.filter = None
 		return out
 
 	def addFilter(self, name, value):
