@@ -18,5 +18,12 @@ def getSicknessByName(name):
 	result = sicknessrepo.getSicknessByName(str(name))
 	return convert.sicknessBoltToJSON(result)
 
-def getSicknessBySymptoms():
-	pass
+def getSicknessBySymptoms(json):
+
+	symptoms = []
+	for s in json.get("symptoms"):
+		symptoms.append(symptom.Symptom(0, s.get("name"))) # id does not matter at this point
+
+	result = sicknessrepo.getSicknessBySymptoms(symptoms)
+
+	return convert.sicknessBoltToJSON(result)

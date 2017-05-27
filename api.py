@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Resource, Api
-from flask import Response
+from flask import Response, request
 
 from backend import service
 
@@ -35,6 +35,13 @@ class SicknessList(Resource):
 		resp = Response(out, status=200, mimetype='application/json')
 		return resp
 
+@app.route('/sbs', methods=['GET'])
+def getSicknessBySymptom():
+	income = request.get_json()
+	out = service.getSicknessBySymptoms(income)
+	resp = Response(out, status=200, mimetype='application/json')
+	return resp
+
 api.add_resource(HelloWorld, '/')
 
 api.add_resource(SymptomList, '/symptom')
@@ -42,6 +49,8 @@ api.add_resource(Symptom, '/symptom/<sym>')
 
 api.add_resource(SicknessList, '/sickness')
 api.add_resource(Sickness, '/sickness/<sick>')
+
+#api.add_resource(SicknessBySymptoms, "/sbs", endpoint = "sicknessbysymptoms")
 
 if __name__ == '__main__':
     app.run(debug=True)

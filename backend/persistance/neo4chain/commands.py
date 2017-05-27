@@ -151,6 +151,7 @@ class Command:
 	# used at the end to return a specific value
 	def returnSingleValue(self, context_name):
 		out = Command(self.command + "\n" + "RETURN " + context_name)
+		return out
 
 	# TODO add methods for removing nodes
 
