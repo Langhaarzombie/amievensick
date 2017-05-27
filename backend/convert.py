@@ -27,7 +27,7 @@ def symptomBoltToJSON(bolt):
 	for x in result:
 		data.append(x.__dict__)
 
-	return json.dumps(data)
+	return json.dumps({'symptoms': data})
 
 def sicknessBoltToJSON(bolt):
 	result = sicknessBoltToDomain(bolt)
@@ -36,4 +36,4 @@ def sicknessBoltToJSON(bolt):
 	for x in result:
 		data.append(x.__dict__)
 
-	return json.dumps(data)
+	return json.dumps({'sicknesses': data})
