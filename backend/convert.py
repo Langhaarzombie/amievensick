@@ -1,4 +1,5 @@
 from domain import symptom, sickness
+import json
 
 def symptomBoltToDomain(bolt):
 	symptoms = []
