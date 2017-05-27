@@ -2,26 +2,7 @@
 
 from neo4j.v1 import GraphDatabase, basic_auth
 import commands
-
-class Connection: # manages the connection to the database
-	def __init__(self, url, username, password):
-		self.url = url
-		self.username = username
-		self.password = password
-
-	def getDriver(self):
-		if(not hasattr(self, 'driver')):
-			#default: bolt://localhost:7687, neo4j, neo4j
-			self.driver = GraphDatabase.driver(self.url, auth=basic_auth(self.username, self.password))
-		return self.driver
-
-	def getSession(self):
-		if(not hasattr(self, 'session')):
-			self.session = self.getDriver().session()
-		return self.session
-
-	def disconnect(self):
-		self.getSession().close()
+import os
 
 class Connector:
 	class Connection:
@@ -43,17 +24,17 @@ class Connector:
 			self.url = url
 			self.username = username
 			self.password = password
-			self.session = getSession()
+			self.session = self.getSession()
 
 	connection = None
 
 	def __init__(self, url = None, username = None, password = None):
 		if(not Connector.connection):
-			Connector.connection = Connection(url, username, password)
+			Connector.connection = self.Connection(url, username, password)
 
 	def setAttributes(self, url, username, password):
 		Connector.connection.disconnect()
-		Connector.connection = Connection(url, username, password)
+		Connector.connection = self.Connection(url, username, password)
 
 class GarbageCollector: # responsible for deleting relations and nodes that were created while testing
 	def __init__(self, session):
@@ -70,4 +51,19 @@ class GarbageCollector: # responsible for deleting relations and nodes that were
 	def cleanUp(self): # TODO adjust to multiple nodes
 		self.deleteRelations("relates") # TODO adjust relation
 		self.deleteNodes("File")
+
+
+url = os.environ.get("GRAPHENEDB_BOLT_URL")
+print(url)
+url = "bolt://hobby-jllldejmojekgbkedincghpl.dbs.graphenedb.com:24786"
+
+user = os.environ.get("GRAPHENEDB_BOLT_USER")
+print(user)
+user = "app68154701-70rEaA"
+
+password = os.environ.get("GRAPHENEDB_BOLT_PASSWORD")
+print(password)
+password = "b.dZtmji6RST3j.cv4W3npw2fjUywVe"
+
+conn = Connector(url, user, password)
 

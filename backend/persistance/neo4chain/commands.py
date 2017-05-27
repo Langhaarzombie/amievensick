@@ -15,16 +15,14 @@ def properDataFormat(value):
 class Filter:
 
 	def build(self):
-		return self.name + ": " + properDataFormat(self.value)
+		out = self.name + ": " + properDataFormat(self.value)
+		return out
 
 	def __init__(self, fname, fvalue):
 		self.name = fname
 		self.value = fvalue
 
 class Where:
-
-	def printFilter(self):
-		print(self.build())
 
 	def build(self):
 		out = "{"
@@ -46,7 +44,8 @@ class Where:
 class FilterID:
 
 	 def build(self):
-	 	return "ID("+self.context_name+") = "+str(self.eyed)
+	 	out = "ID("+self.context_name+") = "+str(self.eyed)
+	 	return out
 
 	 def __init__(self, context_name, eyed):
 	 	self.context_name = context_name
@@ -54,11 +53,9 @@ class FilterID:
 
 class WhereID: # When searching for an ID the context name passed in findNode(...) must be the same as in WhereId(...)
 
-	def printFilter(self):
-		print(self.build())
-
 	def build(self):
-		return "WHERE "+self.filter.build()
+		out = "WHERE "+self.filter.build()
+		return out
 
 	def __init__(self, id = 0, context_name = "result_find_node_default_context_name"):
 		self.filter = FilterID(context_name, id)
@@ -98,19 +95,19 @@ class Command:
 		return out
 
 	#find a relation and immediately return it (! onyl at the end of a statement)
-	def findRelation(self, rel_label, node_label, context_name = "result_find_relation_default_context_name", node_from = "", node_to = "", where = None):
+	def findRelation(self, rel_label, node_label_from, node_label_to, context_name = "result_find_relation_default_context_name", node_from = "", node_to = "", where = None):
 		# Build match clause
-		out = Command(self.command + "\n" + "MATCH (" + node_from + ":" + node_label + ")-[" + context_name + ":" + rel_label)
+		out = Command(self.command + "\n" + "MATCH (" + node_from + ":" + node_label_from + ")-[" + context_name + ":" + rel_label)
 
 		# Build where clause
 		if(where is not None):
 			if(where.__class__.__name__ == "Where"):
 				if(len(where.filter) > 0):
-					out = Command(out.command + " " + where.build() + "]-(" + node_to + ":" + node_label + ")")
+					out = Command(out.command + " " + where.build() + "]-(" + node_to + ":" + node_label_to + ")")
 			elif(where.__class__.__name__ == "WhereID"):
-				out = Command(out.command + "]-(" + node_to + ":" + node_label + ") " + where.build())
+				out = Command(out.command + "]-(" + node_to + ":" + node_label_to + ") " + where.build())
 		else:
-			out = Command(out.command + "]-(" + node_to + ":" + node_label + ")")
+			out = Command(out.command + "]-(" + node_to + ":" + node_label_to + ")")
 
 		# Build return clause 
 		out = Command(out.command + " return "+context_name)
@@ -135,21 +132,28 @@ class Command:
 		return out
 
 	#match a relation and use it in later code
-	def matchRelation(self, rel_label, node_label, context_name, node_from = "", node_to = "", where = None):
+	def matchRelation(self, rel_label, node_label_from, node_label_to, context_name, node_from = "", node_to = "", where = None):
 		# Build match clause
-		out = Command(self.command + "\n" + "MATCH (" + node_from + ":" + node_label + ")-[" + context_name + ":" + rel_label)
+		out = Command(self.command + "\n" + "MATCH (" + node_from + ":" + node_label_from + ")-[" + context_name + ":" + rel_label)
 
 		# Build where clause
 		if(where is not None):
 			if(where.__class__.__name__ == "Where"):
 				if(len(where.filter) > 0):
-					out = Command(out.command + " " + where.build() + "]-(" + node_to + ":" + node_label + ")")
+					out = Command(out.command + " " + where.build() + "]-(" + node_to + ":" + node_label_to + ")")
 			elif(where.__class__.__name__ == "WhereID"):
-				out = Command(out.command + "]-(" + node_to + ":" + node_label + ") " + where.build())
+				out = Command(out.command + "]-(" + node_to + ":" + node_label_to + ") " + where.build())
 		else:
-			out = Command(out.command + "]-(" + node_to + ":" + node_label + ")")
+			out = Command(out.command + "]-(" + node_to + ":" + node_label_to + ")")
 
 		return out
+
+
+	# used at the end to return a specific value
+	def returnSingleValue(self, context_name):
+		out = Command(self.command + "\n" + "RETURN " + context_name)
+
+	# TODO add methods for removing nodes
 
 	def printCommand(self):
 		print(self.command)

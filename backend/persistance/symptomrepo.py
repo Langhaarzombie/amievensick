@@ -4,22 +4,80 @@ def createSymptom(symptom):
 	cmd = commands.Command().addNode("symptom", "s1").setProperty("name", symptom.name, "s1")
 	
 	# Debug
-	print(Executing: )
+	print("Executing: ")
 	cmd.printCommand()
 	
-	result = cmd.execute(dbmanager.Connection().getSession())
+	result = cmd.execute(dbmanager.conn.connection.getSession())
 
 	# Debug
 	print(result)
 
-def saveSymptom(symptom):
-	pass
+def saveSymptom(symptom): #setting the id is forbidden
+	where = commands.WhereID(symptom.id, "s1")
+	cmd = commands.Command().matchNode("smyptom", "s1", where).setProperty("name", symptom.name, "s1")
 
-def deleteSymptom(symptom):
-	pass
+	# Debug
+	print("Executing: ")
+	cmd.printCommand()
 
-def getSymptom(id):
-	pass
+	result = cmd.execute(dbmanager.conn.connection.getSession())
+
+	# Debug
+	print(result)
+
+# TODO add method for deleting
+
+def getSymptomById(id):
+	where = commands.WhereID(symptom.id, "s1")
+	cmd = commands.Command().findNode("symptom", "s1", where)
+
+	# Debug
+	print("Executing: ")
+	cmd.printCommand()
+
+	result = cmd.execute(dbmanager.conn.connection.getSession())
+
+	# Debug
+	print(result)
+
+	return result
+
+def getSymptomByName(name):
+	where = commands.Where().addFilter("name", name)
+	cmd = commands.Command().findNode("symptom", "s1", where)
+
+	# Debug
+	print("Executing: ")
+	cmd.printCommand()
+
+	result = cmd.execute(dbmanager.conn.connection.getSession())
+
+	# Debug
+	print(result)
+
+	return result
 
 def getSymptomsForSickness(sickness):
-	pass
+	#find sickness
+	whereS = commands.WhereID(sickness.id, "sick")
+	cmd = commands.Command().matchNode("sickness", "sick", whereS).matchRelation("indicated", "symptom", "sickness", "rel", "sym", "sick").returnSingleValue("sym")
+
+	# Debug
+	print("Executing: ")
+	cmd.printCommand()
+
+	result = cmd.execute(dbmanager.conn.connection.getSession())
+
+	# Debug
+	print(result)
+
+	return result
+
+def getAllSymptoms():
+	cmd = commands.Command().findNode("symptom")
+
+	# Debug
+	print("Executing: ")
+	cmd.printCommand()
+
+	result = cmd.execute(dbmanager.conn.connection.getSession())
