@@ -22,7 +22,7 @@ def getSicknessBySymptoms(json):
 
 	symptoms = []
 	for s in json.get("symptoms"):
-		symptoms.append(symptom.Symptom(0, s.get("name"))) # id does not matter at this point
+		symptoms.append(symptom.Symptom(0, str(s.get("name")))) # id does not matter at this point
 
 	result = sicknessrepo.getSicknessBySymptoms(symptoms)
 

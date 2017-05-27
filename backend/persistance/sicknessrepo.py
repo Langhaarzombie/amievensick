@@ -45,7 +45,7 @@ def getSicknessBySymptoms(symptoms = []): # leave out paramter to get all sickne
 	cmd = cmd.matchNode("sickness", "sick")
 	for x in xrange(0, len(symptoms)):
 		where = commands.Where().addFilter("name", symptoms[x].name)
-		cmd = cmd.matchNode("symptom", "sym"+str(x))
+		cmd = cmd.matchNode("symptom", "sym"+str(x), where)
 		cmd = cmd.matchRelation("indicates", "symptom", "sickness", "in"+str(x), "sym"+str(x), "sick")
 	cmd = cmd.returnSingleValue("sick")
 
