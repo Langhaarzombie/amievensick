@@ -20,7 +20,7 @@ url/sickness
 ~~~~
 Example for request body: 
 ~~~~
-{"sickness": {"name": "Flue"}}
+{"sickness": {"name": "Flue", "requires_medication": False, "location": "Around the globe", "prevelance": "Common"}}
 ~~~~
 ### Creating an Indicates (relation between Symptom and Sickness)
 URL pattern (POST): 

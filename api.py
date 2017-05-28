@@ -47,7 +47,7 @@ def getSicknessByName(sick):
 	resp = Response(out, status=200, mimetype='application/json')
 	return resp
 
-@app.route('/symptom', methods=['POST'])
+@app.route('/sickness', methods=['POST'])
 def createSickness():
 	income = request.get_json(force=True)
 	out = service.createSickness(income)
