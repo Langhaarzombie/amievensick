@@ -7,50 +7,46 @@ from backend import service
 app = Flask(__name__)
 api = Api(app)
 
-class HelloWorld(Resource):
-    def get(self):
-        return "Hello World"
+@app.route('/', methods=['GET'])
+def hello():
+    return "Hello World"
 
-class Symptom(Resource):
-	def get(self, sym):
-		out = service.getSymptomByName(sym)
-		resp = Response(out, status=200, mimetype='application/json')
-		return resp
+## Symptom Actions ##
 
-class SymptomList(Resource):
-	def get(self):
-		out = service.getAllSymptoms()
-		resp = Response(out, status=200, mimetype='application/json')
-		return resp
+@app.route('/symptom', methods=['GET'])
+def getAllSymptoms():
+	out = service.getAllSymptoms()
+	resp = Response(out, status=200, mimetype='application/json')
+	return resp
 
-class Sickness(Resource):
-	def get(self, sick):
-		out = service.getSicknessByName(sick)
-		resp = Response(out, status=200, mimetype='application/json')
-		return resp
+@app.route('/symptom/<sym>', methods=['GET'])
+def getSymptomByName(sym):
+	out = service.getSymptomByName(sym)
+	resp = Response(out, status=200, mimetype='application/json')
+	return resp
 
-class SicknessList(Resource):
-	def get(self):
-		out = service.getAllSicknesses()
-		resp = Response(out, status=200, mimetype='application/json')
-		return resp
+## Sickness Action ##
+
+@app.route('/sickness', methods=['GET'])
+def getAllSicknesses():
+	out = service.getAllSicknesses()
+	resp = Response(out, status=200, mimetype='application/json')
+	return resp
+
+@app.route('/sickness/<sick>', methods=['GET'])
+def getSicknessByName(sick):
+	out = service.getSicknessByName(sick)
+	resp = Response(out, status=200, mimetype='application/json')
+	return resp
+
+## Combined Actions ##
 
 @app.route('/sbs', methods=['POST'])
 def getSicknessBySymptom():
 	income = request.get_json()
 	out = service.getSicknessBySymptoms(income)
 	resp = Response(out, status=200, mimetype='application/json')
-	return resp
-
-api.add_resource(HelloWorld, '/')
-
-api.add_resource(SymptomList, '/symptom')
-api.add_resource(Symptom, '/symptom/<sym>')
-
-api.add_resource(SicknessList, '/sickness')
-api.add_resource(Sickness, '/sickness/<sick>')
-
-#api.add_resource(SicknessBySymptoms, "/sbs", endpoint = "sicknessbysymptoms")
+	return respa
 
 if __name__ == '__main__':
     app.run(debug=True)
