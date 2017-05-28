@@ -1,5 +1,5 @@
 from domain import symptom, sickness, indicates
-from persistance import sicknessrepo, symptomrepo
+from persistance import sicknessrepo, symptomrepo, indicatesrepo
 import convert
 
 ## Symptom Actions ##
@@ -33,6 +33,25 @@ def createSickness(json):
 	prevalence 				= json.get("sickness").get("prevalence")
 	location 				= json.get("sickness").get("location")
 	result = sicknessrepo.createSickness(sickness.Sickness(0, str(name), str(requires_medication), str(prevalence), str(location))) # Id does not matter at this point
+	return result
+
+## Indicates Actions ##
+
+def getIndicatesForNodes(sym, sick):
+	sym1 = symptom.Symptom(0, str(sym)) # Id does not matter, name passed via url
+	sick1 = sickness.Sickness(0, str(sick), None, None, None) # Id does not matter, name is the only thing that is checked
+
+	result = indicatesrepo.getIndiForNodes(sym1, sick1)
+
+	return convert.indicatesBoltToJSON(result)
+
+def createIndicates(json):
+	sym_name = json.get("indicates").get("from")
+	sick_name = json.get("indicates").get("to")
+	severity = json.get("indicates").get("severity")
+
+	result = indicatesrepo.createIndicates(indicates.Indicates(0, str(severity), None, None), symptom.Symptom(0, str(sym_name)), sickness.Sickness(0, str(sick_name), None, None, None))
+
 	return result
 
 ## Combined Actions ##

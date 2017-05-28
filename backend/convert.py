@@ -1,4 +1,4 @@
-from domain import symptom, sickness
+from domain import symptom, sickness, indicates
 import json
 
 def symptomBoltToDomain(bolt):
@@ -20,6 +20,15 @@ def sicknessBoltToDomain(bolt):
 
 	return sicknesses
 
+def indicatesBoltToDomain(bolt):
+	indis = []
+
+	for x in bolt.records():
+		for y in x.values():
+			indis.append(indicates.Indicates(y.id, y.get('severity'), None, None))
+
+	return indis
+
 def symptomBoltToJSON(bolt):
 	result = symptomBoltToDomain(bolt)
 
@@ -37,3 +46,12 @@ def sicknessBoltToJSON(bolt):
 		data.append(x.__dict__)
 
 	return json.dumps({'sicknesses': data})
+
+def indicatesBoltToJSON(bolt):
+	result = indicatesBoltToDomain(bolt)
+
+	data = []
+	for x in result:
+		data.append(x.__dict__)
+
+	return json.dumps({'indicates': data})

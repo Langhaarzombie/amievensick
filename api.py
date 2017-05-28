@@ -21,7 +21,7 @@ def getAllSymptoms():
 	resp = Response(out, status=200, mimetype='application/json')
 	return resp
 
-@app.route('/symptom/<sym>', methods=['GET'])
+@app.route('/symptom/<string:sym>', methods=['GET'])
 def getSymptomByName(sym):
 	out = service.getSymptomByName(sym)
 	resp = Response(out, status=200, mimetype='application/json')
@@ -41,7 +41,7 @@ def getAllSicknesses():
 	resp = Response(out, status=200, mimetype='application/json')
 	return resp
 
-@app.route('/sickness/<sick>', methods=['GET'])
+@app.route('/sickness/<string:sick>', methods=['GET'])
 def getSicknessByName(sick):
 	out = service.getSicknessByName(sick)
 	resp = Response(out, status=200, mimetype='application/json')
@@ -49,15 +49,30 @@ def getSicknessByName(sick):
 
 @app.route('/symptom', methods=['POST'])
 def createSickness():
-	income = request.get_json()
+	income = request.get_json(force=True)
 	out = service.createSickness(income)
+	return "Success! Info: " + str(out)
+
+## Indicated Action ##
+
+@app.route('/indicates/<string:sym>/<string:sick>', methods=['GET'])
+def getIndicatesForNodes(sym, sick):
+	out = service.getIndicatesForNodes(sym, sick)
+	resp = Response(out, status=200, mimetype='application/json')
+	return resp
+
+@app.route('/indicates', methods=['POST'])
+def createIndicates():
+	income = request.get_json(force=True)
+	out = service.createIndicates(income)
+	resp = Response(out, status=200, mimetype='application/json')
 	return "Success! Info: " + str(out)
 
 ## Combined Actions ##
 
 @app.route('/sbs', methods=['POST'])
 def getSicknessBySymptom():
-	income = request.get_json()
+	income = request.get_json(force=True)
 	out = service.getSicknessBySymptoms(income)
 	resp = Response(out, status=200, mimetype='application/json')
 	return resp

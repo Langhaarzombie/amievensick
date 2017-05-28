@@ -13,6 +13,8 @@ def createSickness(sickness):
 	# Debug
 	print(result)
 
+	return result
+
 def saveSickness(sickness):
 	where = commands.WhereID(sickness.id, "s1")
 	cmd = commands.Command().matchNode("sickness", "s1", where)
@@ -23,6 +25,11 @@ def saveSickness(sickness):
 	cmd.printCommand()
 
 	result = cmd.execute(dbmanager.conn.connection.getSession())
+
+	# Debug
+	print(result)
+
+	return result
 
 def getSicknessByName(name):
 	where = commands.Where().addFilter("name", name)

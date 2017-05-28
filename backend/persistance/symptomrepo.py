@@ -12,6 +12,8 @@ def createSymptom(symptom):
 	# Debug
 	print(result)
 
+	return result
+
 def saveSymptom(symptom): #setting the id is forbidden
 	where = commands.WhereID(symptom.id, "s1")
 	cmd = commands.Command().matchNode("smyptom", "s1", where).setProperty("name", symptom.name, "s1")
@@ -24,6 +26,8 @@ def saveSymptom(symptom): #setting the id is forbidden
 
 	# Debug
 	print(result)
+
+	return result
 
 # TODO add method for deleting
 

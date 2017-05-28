@@ -31,15 +31,18 @@ class Where:
 			out = out + temp + self.filter[x].build()
 			temp = ", "
 		out = out + "}"
-		self.filter = None
+		
+		for i in xrange(0,len(self.filter)):
+			del self.filter[i]
+
 		return out
 
 	def addFilter(self, name, value):
 		self.filter.append(Filter(name, value))
 		return self
 
-	def __init__(self, init_filter = []):
-		self.filter = init_filter
+	def __init__(self):
+		self.filter = []
 
 class FilterID:
 
