@@ -46,7 +46,7 @@ def getSicknessBySymptom():
 	income = request.get_json()
 	out = service.getSicknessBySymptoms(income)
 	resp = Response(out, status=200, mimetype='application/json')
-	return respa
+	return resp
 
 if __name__ == '__main__':
     app.run(debug=True)
