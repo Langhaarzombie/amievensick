@@ -1,7 +1,7 @@
 # This is the backend system for *Am I Even Sick*
 In the following text will explain its capabilities and show you how to use it.
 
-**Important: ** Every time you are using a request with a JSON body, set the request the body type to JSON.
+**Important:** Every time you are using a request with a JSON body, set the request the body type to JSON.
 
 ## Creating stuff
 ### Creating a Symptom
