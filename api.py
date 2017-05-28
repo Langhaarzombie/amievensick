@@ -29,7 +29,7 @@ def getSymptomByName(sym):
 
 @app.route('/symptom', methods=['POST'])
 def createSymptom():
-	income = request.get_json()
+	income = request.get_json(force=True)
 	out = service.createSymptom(income)
 	return "Success! Info: " + str(out)
 
@@ -65,7 +65,6 @@ def getIndicatesForNodes(sym, sick):
 def createIndicates():
 	income = request.get_json(force=True)
 	out = service.createIndicates(income)
-	resp = Response(out, status=200, mimetype='application/json')
 	return "Success! Info: " + str(out)
 
 ## Combined Actions ##
