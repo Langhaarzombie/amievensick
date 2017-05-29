@@ -30,8 +30,8 @@ def getSymptomByName(sym):
 @app.route('/symptom', methods=['POST'])
 def createSymptom():
 	income = request.get_json(force=True)
-	out = service.createSymptom(income)
-	return "Success! Info: " + str(out)
+	db, elastic = service.createSymptom(income)
+	return "Success! Info: " + str(db) + "\n" + str(elastic)
 
 ## Sickness Action ##
 

@@ -2,6 +2,8 @@ from domain import symptom, sickness, indicates
 from persistance import sicknessrepo, symptomrepo, indicatesrepo
 import convert
 
+import requests
+
 ## Symptom Actions ##
 
 def getAllSymptoms():
@@ -15,7 +17,17 @@ def getSymptomByName(name):
 def createSymptom(json):
 	name = json.get("symptom").get("name")
 	result = symptomrepo.createSymptom(symptom.Symptom(0, str(name))) # Id does not matter at this point
-	return result
+
+	# Send update to elastic search
+	elastic = updateElastic(name)
+
+	return result, elastic
+
+# Our elastic search only cares aout the names of the symptoms. But they need to be up to date
+def updateElastic(name):
+	url = 'https://3tqci0amyj:l2s1jag1tn@first-cluster-1485543977.eu-west-1.bonsaisearch.net/amisick/symptom'
+	response = requests.post(url, json= {"name": name})
+	return response
 
 ## Sickness Actions ##
 
