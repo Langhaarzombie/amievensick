@@ -31,7 +31,7 @@ class Where:
 			out = out + temp + self.filter[x].build()
 			temp = ", "
 		out = out + "}"
-		
+
 		for i in xrange(0,len(self.filter)):
 			del self.filter[i]
 
@@ -92,7 +92,7 @@ class Command:
 		else:
 			out = Command(out.command + ") ")
 
-		# Build return clause 
+		# Build return clause
 		out = Command(out.command + " return "+context_name)
 
 		return out
@@ -112,7 +112,7 @@ class Command:
 		else:
 			out = Command(out.command + "]-(" + node_to + ":" + node_label_to + ")")
 
-		# Build return clause 
+		# Build return clause
 		out = Command(out.command + " return "+context_name)
 
 		return out
