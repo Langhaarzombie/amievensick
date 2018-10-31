@@ -1,9 +1,4 @@
-### mac ###
 .DS_Store
-
-### python ###
 *.pyc
 test.py
-
-### else ###
 .env
